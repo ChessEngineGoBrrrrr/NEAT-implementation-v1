@@ -366,6 +366,7 @@ def Fitness(Actual_Eval, Net_Eval):
 	return(Fitness)
 def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
 	Max_Net_Num_1 = -1
+	Ofspring_Nodes = []
 	Max_Net_Num_2 = -1
 	if Net_2_Is_Unique == False:
 		Net_Num_2 = 0
@@ -497,6 +498,8 @@ def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
 			Alredy_seen.append(Ofspring_Conections[j][1])
 		Alredy_Seeeen = False
 	Alredy_seen = sorted(Alredy_seen)
+	for node in Alredy_seen:
+		Ofspring_Nodes.append([node, "hidden" , 0 ,round(random.uniform(-3,3), 2) ])
 	print(Ofspring_Conections,Alredy_seen, "im number 3333333")
 	return(Ofspring_Conections)		
 Curent_Layer_ToBe_Calculated = 1
@@ -743,7 +746,7 @@ def Make_New_Population():
 		#	Copy_Master_Nodes[bullshit[2][bullshit[1][j][0]][i]] = ["null"]
 		#	Copy_Master_Links[bullshit[2][bullshit[1][j][0]][i]] = ["null"]
 #print(Copy_Master_Links, Copy_Master_Nodes)
-Fitness_Calculate()
+Make_New_Population()
 Offspring_Lst = Hoinky_Boinky(0,1)
 print(Offspring_Lst)
 Alredy_seen = []
