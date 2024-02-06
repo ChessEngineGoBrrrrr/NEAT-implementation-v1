@@ -644,7 +644,7 @@ def Fitness_Calculate():
 	game = random.randint(0, len(File_Procesed_New) - 1)
 	Fitness_List = []
 	for j in range(512):
-		chess.Board(File_Procesed[game][1])
+		chess.Board(File_Procesed_New[game][1])
 		if File_Procesed_New[game][0][1] == "mate":
 			Eval = 300
 		else:
@@ -659,7 +659,7 @@ def Fitness_Calculate():
 	for i in range(Batch_Size - 1):
 		game = random.randint(0, len(File_Procesed_New) - 1)
 		for j in range(512):
-			chess.Board(File_Procesed[game][1])
+			chess.Board(File_Procesed_New[game][1])
 			if File_Procesed_New[game][0][1] == "mate":
 				Eval = 300
 			else:
