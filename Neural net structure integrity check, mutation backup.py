@@ -571,11 +571,9 @@ for j in range(len(Master_Links)):
 			Master_Links[j].append(Mutate_Links(j))
 		if chance <= 2:
 			Mutate_Bias(j)
-Fitness_Specimens = [] 
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
 def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
-	global Fitness_Specimen
 	Global_Avrage = 0
 	Total_Ofsprings = 0
 	Amout_off_Ofsprings_That_Resault = 0
@@ -633,8 +631,7 @@ def Fitness_Calculate():
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
 	global Caclulate_Return
-	global Fitness_List
-	global Batch_Size
+	Batch_Size = 10
 	game = random.randint(0, len(File_Procesed_New) - 1)
 	Fitness_List = []
 	for j in range(512):
@@ -675,15 +672,14 @@ def Fitness_Calculate():
 		else:
 			Fitness_List[j] = round(Fitness_List[j]/-70, 2)
 	print(Fitness_List)
+	return(Fitness_List)
 
-Batch_Size = 10
 
 def Make_New_Population():
-	Fitness_Calculate()
-	global Fitness_List
+	Fitness_List = Fitness_Calculate()
 	bullshit = Next_Generation_Generate(True, 60)
-	Species = bullshit[2]
-	Offspring_List = bullshit[1]
+	Species = bullshit[1]
+	Offspring_List = bullshit[0]
 	Copy_Master_Links = Master_Links[:]
 	Copy_Master_Nodes = Master_Nodes[:]
 	Roulette_List = []
