@@ -580,7 +580,6 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 	Total_Ofsprings = 0
 	Amout_off_Ofsprings_That_Resault = 0
 	Species_Avrage_Fitness_List = []
-	Return_Species = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,]
 	if Last_Species_Amout_More == True:
 		Allowed_Species_Distance -= 1
 	else:
@@ -600,31 +599,23 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 			Species.append([j + 1])
 			print(Species, 'sorticoftarmilnof')
 	for j in range(len(Species)):
-		for l in range(len(Species[j])):
-			Return_Species[Species[j][l]] = j
-	for j in range(len(Species)):
 		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[j][0]]])
 	for j in range(len(Species)):
 		for l in range(len(Species[j])):
 			if l != 0:
 				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Species[j][l]]
 	print( Species_Avrage_Fitness_List)
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1]/(len(Species[Species_Avrage_Fitness_List[j][0]])*len(Species[Species_Avrage_Fitness_List[j][0]]))
-	print( Species_Avrage_Fitness_List)
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Global_Avrage = Global_Avrage + Species_Avrage_Fitness_List[j][1]
+	for Offspring_Amout in Species_Avrage_Fitness_List:
+		Offspring_Amout[1] = Offspring_Amout[1]/(len(Species[Offspring_Amout[0]])*len(Species[Offspring_Amout[0]]))
+		Global_Avrage = Global_Avrage + Offspring_Amout[1]
 	Global_Avrage = Global_Avrage/len(Species_Avrage_Fitness_List)
-	print(Species_Avrage_Fitness_List)
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Species_Avrage_Fitness_List[j].append(Species_Avrage_Fitness_List[j][1]/Global_Avrage*len(Species[Species_Avrage_Fitness_List[j][0]]))
-		Total_Ofsprings = Species_Avrage_Fitness_List[j][1]/Global_Avrage*len(Species[Species_Avrage_Fitness_List[j][0]]) + Total_Ofsprings
+	for Offspring_Amout in Species_Avrage_Fitness_List:
+		Offspring_Amout.append(Offspring_Amout[1]/Global_Avrage*len(Species[Offspring_Amout[0]]))
+		Total_Ofsprings = Offspring_Amout[2] + Total_Ofsprings
 	Total_Ofsprings = 512/Total_Ofsprings
-	print(Species_Avrage_Fitness_List, "shshshhshshhshshsshhshshshshhsh")
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Species_Avrage_Fitness_List[j][2] = round(Species_Avrage_Fitness_List[j][2]*Total_Ofsprings, 0)
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Species_Avrage_Fitness_List[j][2]
+	for Offspring_Amout in Species_Avrage_Fitness_List:
+		Offspring_Amout[2] = round(Offspring_Amout[2]*Total_Ofsprings, 0)
+		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Offspring_Amout[2]
 	print(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
 	if Amout_off_Ofsprings_That_Resault > 512:
 		for j in range(len(Species_Avrage_Fitness_List)):
@@ -636,8 +627,8 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 	Amout_off_Ofsprings_That_Resault = 0
 	for j in range(len(Species_Avrage_Fitness_List)):
 		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Species_Avrage_Fitness_List[j][2]
-	print(Return_Species,Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
-	return(Return_Species,Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
+	print(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
+	return(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
 def Fitness_Calculate():
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
