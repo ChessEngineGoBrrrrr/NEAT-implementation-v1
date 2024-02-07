@@ -300,7 +300,6 @@ def Mutate_Nodes(Net_Num):
 Historic_Queue = []
 def Layer_Ajust(Net_Num, queue):
 #Forward breath for search algorthm moving all node that are direct "ofsprings" one layer forward
-	# PROBLEM CONECTIONS GOING MORE THAN ONE LAYER LIKE FRO LAYER 1 TO 3 ARE CAUSING UNWANTED INDEXING OF THE LAYER
 	global Historic_Queue
 	Nodes_To_Increment = []
 	Temp_queue = []
@@ -321,20 +320,20 @@ def Layer_Ajust(Net_Num, queue):
 		else:
 			#actual algorithm
 			for i in range(len(queue)):
-				for j in range(len(Master_Links[Net_Num])):
-					if Master_Links[Net_Num][j][0] == queue[i] and Master_Links[Net_Num][j][2] != "invalid" and Master_Nodes[Net_Num][Master_Links[Net_Num][j][1]][2] - Master_Nodes[Net_Num][queue[i]][2] == 0:
+				for Link_info in Master_Links[Net_Num]:
+					if Link_info[0] == queue[i] and Link_info[2] != "invalid" and Master_Nodes[Net_Num][Link_info[1]][2] - Master_Nodes[Net_Num][queue[i]][2] == 0:
 						Node_Layer_Incremented = False
 						for l in range(len(Historic_Queue[len(Historic_Queue) - 1])):
-							if Historic_Queue[len(Historic_Queue) - 1][l] == Master_Links[Net_Num][j][1]:
+							if Historic_Queue[len(Historic_Queue) - 1][l] == Link_info[1]:
 								Node_Layer_Incremented = True
 								break
 							else:
 								Node_Layer_Incremented = False
 						if Node_Layer_Incremented == False:
-							if Master_Links[Net_Num][j][1] != 65:	
-								Master_Nodes[Net_Num][Master_Links[Net_Num][j][1]][2] += 1
-								Historic_Queue[len(Historic_Queue) - 1].append(Master_Links[Net_Num][j][1])
-							Temp_queue.append(Master_Links[Net_Num][j][1])
+							if Link_info[1] != 65:	
+								Master_Nodes[Net_Num][Link_info[1]][2] += 1
+								Historic_Queue[len(Historic_Queue) - 1].append(Link_info[1])
+							Temp_queue.append(Link_info[1])
 			queue = Temp_queue
 			Layer_Ajust(Net_Num, queue)
 def Mutate_Weight(Net_Num):
