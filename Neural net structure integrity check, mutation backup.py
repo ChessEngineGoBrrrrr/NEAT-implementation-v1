@@ -365,6 +365,7 @@ def Fitness(Actual_Eval, Net_Eval):
 		Fitness -= 1
 	return(Fitness)
 def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
+	global Fitness_List
 	Max_Net_Num_1 = -1
 	Ofspring_Nodes = []
 	Max_Net_Num_2 = -1
@@ -377,7 +378,6 @@ def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
 			Mutate_Nodes(0)
 			Mutate_Links(0)
 	important1 = 3
-	global Fitness_List
 	Ofspring_Conections = []
 	#finds excess genes
 	for j in range(len(Master_Links[Net_Num_1])):
@@ -574,6 +574,7 @@ for j in range(len(Master_Links)):
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
 def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
+	global Fitness_List
 	Global_Avrage = 0
 	Total_Ofsprings = 0
 	Amout_off_Ofsprings_That_Resault = 0
@@ -662,21 +663,18 @@ def Fitness_Calculate():
 			Calculate(j)
 			Fitness_List[j] = Fitness_List[j] + Fitness(Eval, Caclulate_Return)
 	Max_Fitness = 0
-	for j in range(len(Fitness_List)):
-		Fitness_List[j] = round(Fitness_List[j]/Batch_Size, 2)
-	for j in range(len(Fitness_List)):
-		Fitness_List[j] = Fitness_List[j]*-1
-	for j in range(len(Fitness_List)):
-		if Fitness_List[j] + 100 > 0:	
-			Fitness_List[j] = round((Fitness_List[j] + 100)*(Fitness_List[j] + 100), 2)
+	for Individual_Fitness in Fitness_List:
+		Individual_Fitness = round(Individual_Fitness/Batch_Size, 2)
+		Individual_Fitness = Individual_Fitness*-1
+		if Individual_Fitness + 100 > 0:	
+			Individual_Fitness = round((Individual_Fitness+100) * (Individual_Fitness+100), 2)
 		else:
-			Fitness_List[j] = round(Fitness_List[j]/-70, 2)
+			Individual_Fitness = round(Individual_Fitness/-70, 2)
 	print(Fitness_List)
 	return(Fitness_List)
-
-
+Fitness_List = Fitness_Calculate()
 def Make_New_Population():
-	Fitness_List = Fitness_Calculate()
+	global Fitness_List
 	bullshit = Next_Generation_Generate(True, 60)
 	Species = bullshit[1]
 	Offspring_List = bullshit[0]
