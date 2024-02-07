@@ -205,15 +205,15 @@ def Mutate_Links(Net_Num):
 			Conection_Num_2 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
 		Conection_alredy_exists = False
 		if Master_Nodes[Net_Num][Conection_Num_1][2] < Master_Nodes[Net_Num][Conection_Num_2][2]:	
-			for j in range(len(Master_Links[Net_Num])):
+			for Link_info in Master_Links[Net_Num]:
 				Conection_alredy_exists = False
-				if Conection_Num_1 == Master_Links[Net_Num][j][0] and Conection_Num_2 == Master_Links[Net_Num][j][1]:
+				if Conection_Num_1 == Link_info[0] and Conection_Num_2 == Link_info[1]:
 					Conection_alredy_exists = True
 					break
 		else:
-			for j in range(len(Master_Links[Net_Num])):
+			for Link_info in Master_Links[Net_Num]:
 				Conection_alredy_exists = False
-				if Conection_Num_1 == Master_Links[Net_Num][j][1] and Conection_Num_2 == Master_Links[Net_Num][j][0]:
+				if Conection_Num_1 == Link_info[1] and Conection_Num_2 == Link_info[0]:
 					Conection_alredy_exists = True
 					break		
 		if (Master_Nodes[Net_Num][Conection_Num_1][2] != Master_Nodes[Net_Num][Conection_Num_2][2] and Conection_alredy_exists == False):
