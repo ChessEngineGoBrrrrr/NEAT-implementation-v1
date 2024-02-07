@@ -338,17 +338,17 @@ def Layer_Ajust(Net_Num, queue):
 			queue = Temp_queue
 			Layer_Ajust(Net_Num, queue)
 def Mutate_Weight(Net_Num):
-	for a in range(len(Master_Links[Net_Num])):
-		if random.randint(1, 10) < 7 and Master_Links[Net_Num][a][2] != "invalid":
-			Master_Links[Net_Num][a][3] = round(Master_Links[Net_Num][a][3] + round(random.uniform(-0.2, 0.2), 2), 2)
-		elif random.randint(1, 10) < 4 and Master_Links[Net_Num][a][2] == "disabled":
-			Master_Links[Net_Num][a][2] = "valid"
-		elif random.randint(1, 10) < 2 and Master_Links[Net_Num][a][2] != "invalid":
-			Master_Links[Net_Num][a][3] = round(Master_Links[Net_Num][a][3] + round(random.uniform(-2, 2), 2), 2)
+	for Link_info in Master_Links[Net_Num]:
+		if random.randint(1, 10) < 7 and Link_info[2] != "invalid":
+			Link_info[3] = round(Link_info[3] + round(random.uniform(-0.2, 0.2), 2), 2)
+		elif random.randint(1, 10) < 4 and Link_info[2] == "disabled":
+			Link_info[2] = "valid"
+		elif random.randint(1, 10) < 2 and Link_info[2] != "invalid":
+			Link_info[3] = round(Link_info[3] + round(random.uniform(-2, 2), 2), 2)
 def Mutate_Bias(Net_Num):
-	for a in range(len(Master_Nodes[Net_Num])):
-		if random.randint(1, 10) < 3 and Master_Nodes[Net_Num][a][0]:
-			Master_Nodes[Net_Num][a][3] = Master_Nodes[Net_Num][a][3] + round(random.uniform(-0.7,0.7), 2)
+	for Node_Info in Master_Nodes[Net_Num]:
+		if random.randint(1, 10) < 3 and Node_Info[0] > 64:
+			Node_Info[3] = Node_Info[3] + round(random.uniform(-0.7,0.7), 2)
 def Disable_Conection(Net_Num, Conection_Num):
 	Master_Links[Net_Num][Conection_Num][2] = "disabled"
 def Fitness(Actual_Eval, Net_Eval):
@@ -521,39 +521,39 @@ def Calculate(Net_Num):
 	First_Layer = fen_to_input(chess.Board().fen())
 	Buffer_Layer = []
 	if Curent_Layer_ToBe_Calculated == 1:	
-		for j in range(len(Master_Nodes[Net_Num])):
-			for i in range(len(Master_Links[Net_Num])):
-				if (Master_Nodes[Net_Num][j][2] == Curent_Layer_ToBe_Calculated and Master_Nodes[Net_Num][j][0] == Master_Links[Net_Num][i][1]) and Master_Links[Net_Num][i][2] == "valid":
-					Sum_Current_Node = Sum_Current_Node + First_Layer[Master_Links[Net_Num][i][0]]*Master_Links[Net_Num][i][3]
+		for Node_Info in Master_Nodes[Net_Num]:
+			for Link_info in Master_Links[Net_Num]:
+				if (Node_Info[2] == Curent_Layer_ToBe_Calculated and Node_Info[0] == Link_info[1]) and Link_info[2] == "valid":
+					Sum_Current_Node = Sum_Current_Node + First_Layer[Link_info[0]]*Link_info[3]
 					Exists_Alredy = True
 			if Exists_Alredy == True:
 
 
-				if Master_Nodes[Net_Num][j][0] > 65:
-					Sum_Current_Node = Sum_Current_Node + Master_Nodes[Net_Num][j][3]
+				if Node_Info[0] > 65:
+					Sum_Current_Node = Sum_Current_Node + Node_Info[3]
 				if Sum_Current_Node > 0 or Sum_Current_Node == 0:
-					Current_Layer.append([Master_Nodes[Net_Num][j][0],round(Sum_Current_Node,2), Master_Nodes[Net_Num][j][2]])
+					Current_Layer.append([Node_Info[0],round(Sum_Current_Node,2), Node_Info[2]])
 				else: 
-					 Current_Layer.append([Master_Nodes[Net_Num][j][0],round(Sum_Current_Node*0.5, 2), Master_Nodes[Net_Num][j][2]])
+					 Current_Layer.append([Node_Info[0],round(Sum_Current_Node*0.5, 2), Node_Info[2]])
 			Exists_Alredy = False
 			Sum_Current_Node = 0
 		Curent_Layer_ToBe_Calculated = 1 + Curent_Layer_ToBe_Calculated
 	else:
-		for j in range(len(Master_Nodes[Net_Num])):
-			for i in range(len(Master_Links[Net_Num])):
-				if (Master_Nodes[Net_Num][j][2] == Curent_Layer_ToBe_Calculated and Master_Nodes[Net_Num][j][0] == Master_Links[Net_Num][i][1]) and Master_Links[Net_Num][i][2] == "valid":
+		for Node_Info in Master_Nodes[Net_Num]:
+			for Link_info in Master_Links[Net_Num]:
+				if (Node_Info[2] == Curent_Layer_ToBe_Calculated and Node_Info[0] == Link_info[1]) and Link_info[2] == "valid":
 					for k in range(len(Current_Layer)):
-						if Current_Layer[k][0] == Master_Links[Net_Num][i][0]:	
-							Sum_Current_Node = Sum_Current_Node + Current_Layer[k][1]*Master_Links[Net_Num][i][3]
+						if Current_Layer[k][0] == Link_info[0]:	
+							Sum_Current_Node = Sum_Current_Node + Current_Layer[k][1]*Link_info[3]
 							Exists_Alredy = True
 			if Exists_Alredy == True:
 
-				if Master_Nodes[Net_Num][j][0] > 65:	
-					Sum_Current_Node = Sum_Current_Node + Master_Nodes[Net_Num][j][3]
+				if Node_Info[0] > 65:	
+					Sum_Current_Node = Sum_Current_Node + Node_Info[3]
 				if Sum_Current_Node > 0 or Sum_Current_Node == 0:
-					Current_Layer.append([Master_Nodes[Net_Num][j][0],round(Sum_Current_Node, 2), Master_Nodes[Net_Num][j][2]])
+					Current_Layer.append([Node_Info[0],round(Sum_Current_Node, 2), Node_Info[2]])
 				else:
-					 Current_Layer.append([Master_Nodes[Net_Num][j][0],round(Sum_Current_Node * 0.5, 2), Master_Nodes[Net_Num][j][2]])
+					 Current_Layer.append([Node_Info[0],round(Sum_Current_Node * 0.5, 2), Node_Info[2]])
 			Exists_Alredy = False
 			Sum_Current_Node = 0
 		Curent_Layer_ToBe_Calculated = 1 + Curent_Layer_ToBe_Calculated
