@@ -596,12 +596,12 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 		if Species_Has_Been_Found == False:
 			Species.append([j + 1])
 			print(Species, 'sorticoftarmilnof')
-	for j in range(len(Species)):
-		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[j][0]]])
-	for j in range(len(Species)):
-		for l in range(len(Species[j])):
+	for Species in Species:
+		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[0]]])
+	for Species in Species:
+		for Individual in Species:
 			if l != 0:
-				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Species[j][l]]
+				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Individual]
 	print( Species_Avrage_Fitness_List)
 	for Offspring_Amout in Species_Avrage_Fitness_List:
 		Offspring_Amout[1] = Offspring_Amout[1]/(len(Species[Offspring_Amout[0]])*len(Species[Offspring_Amout[0]]))
@@ -676,36 +676,36 @@ def Make_New_Population():
 	global Fitness_List
 	bullshit = Next_Generation_Generate(True, 60)
 	Species = bullshit[1]
-	Offspring_List = bullshit[0]
+	Allowed_Offspring_List = bullshit[0]
 	Copy_Master_Links = Master_Links[:]
 	Copy_Master_Nodes = Master_Nodes[:]
 	Roulette_List = []
 	Sum_Species = 0
 	index = 0
 	Parent_2 = -1
-	for j in range(len(Species)):
+	for Species_Allowed_Offsprings,Species in zip(Allowed_Offspring_List, Species):
 		Parent_2 = -1
 		Roulette_List = []
 		Sum_Species = 0
-		for i in range(len(Species[j])):
-			Sum_Species = Sum_Species + Fitness_List[Species[j][i]]
-		Roulette_List = [round(Fitness_List[Species[j][0]]/Sum_Species*100, 2)]	
-		for i in range(len(Species[j])):		
+		for Individual in Species:
+			Sum_Species = Sum_Species + Fitness_List[Individual]
+		Roulette_List = [round(Fitness_List[Species[0]]/Sum_Species*100, 2)]	
+		for Individual in Species:		
 			if i != 0:
-				Roulette_List.append(round(Fitness_List[Species[j][i]]/Sum_Species*100 + Roulette_List[i - 1], 2))
+				Roulette_List.append(round(Fitness_List[Individual]/Sum_Species*100 + Roulette_List[i - 1], 2))
 		print(Roulette_List)
-		print(Offspring_List[j][2])
-		if len(Species[j]) == 1:
-			for i in range(int(Offspring_List[j][2])):
+		print(Species_Allowed_Offsprings[2])
+		if len(Species) == 1:
+			for i in range(int(Species_Allowed_Offsprings[2])):
 				Original_Net_0_Links = Master_Links[0]
 				Original_Net_0_Nodes = Master_Nodes[0]
-				Copy_Master_Links[index] = Hoinky_Boinky(Species[j][0], 0, False)
+				Copy_Master_Links[index] = Hoinky_Boinky(Species[0], 0, False)
 				Master_Links[0] = Original_Net_0_Links
 				Master_Nodes[0] = Original_Net_0_Nodes
 				index += 1
 				print(Copy_Master_Links[index - 1])
-		if Offspring_List[j][2] != 0 and len(Species[j]) != 1:
-			for i in range(int(Offspring_List[j][2])):
+		if Species_Allowed_Offsprings[2] != 0 and len(Species) != 1:
+			for i in range(int(Species_Allowed_Offsprings[2])):
 				Random_Number = round(random.uniform(0, 100), 2) 
 				for l in range(len(Roulette_List)):
 					if Random_Number < Roulette_List[l]:
@@ -720,16 +720,10 @@ def Make_New_Population():
 							Parent_2 = l
 							print(Parent_2, "parent2", Parent_1)
 							break
-				Copy_Master_Links[index] = Hoinky_Boinky(Species[j][Parent_1], Species[j][Parent_2], True)
+				Copy_Master_Links[index] = Hoinky_Boinky(Species[Parent_1], Species[Parent_2], True)
 				index += 1
 			print(Copy_Master_Links[index - 1])
 	print(Copy_Master_Links)
-#for j in range(len(bullshit[1])):
-	#if bullshit[1][j][2] == 0:
-		#for i in range(len(bullshit[2][bullshit[1][j][0]])):
-		#	Copy_Master_Nodes[bullshit[2][bullshit[1][j][0]][i]] = ["null"]
-		#	Copy_Master_Links[bullshit[2][bullshit[1][j][0]][i]] = ["null"]
-#print(Copy_Master_Links, Copy_Master_Nodes)
 Make_New_Population()
 Offspring_Lst = Hoinky_Boinky(0,1)
 print(Offspring_Lst)
