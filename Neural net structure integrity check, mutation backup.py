@@ -598,9 +598,11 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 			print(Species, 'sorticoftarmilnof')
 	for Species in Species:
 		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[0]]])
+	print(Species)
 	for Species in Species:
 		for Individual in Species:
 			if l != 0:
+		print(Species)
 				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Individual]
 	print( Species_Avrage_Fitness_List)
 	for Offspring_Amout in Species_Avrage_Fitness_List:
