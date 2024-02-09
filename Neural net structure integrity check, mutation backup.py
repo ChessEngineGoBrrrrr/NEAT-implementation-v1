@@ -104,7 +104,7 @@ def Generate_Neural_Net_Links():
 Master_Nodes = Generate_Neural_Net_Nodes()
 Master_Links = Generate_Neural_Net_Links()
 print(len(Master_Links))
-def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int):
+def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 	Inovation_List_Species_Distance = []
 	weight_difrance = 0
 	Excess_Amount = 0
@@ -350,7 +350,7 @@ def Mutate_Bias(Net_Num: int):
 			Node_Info[3] = Node_Info[3] + round(random.uniform(-0.7,0.7), 2)
 def Disable_Conection(Net_Num: int, Conection_Num: int):
 	Master_Links[Net_Num][Conection_Num][2] = "disabled"
-def Fitness(Actual_Eval: float, Net_Eval: float):
+def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
 	Fitness = 0
 	if Actual_Eval > Net_Eval and (Actual_Eval > 3 or Actual_Eval < -3):
 		Fitness = Actual_Eval - Net_Eval
@@ -598,9 +598,8 @@ def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Dist
 			print(Species, 'sorticoftarmilnof')
 	for Species in Species:
 		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[0]]])
-	print(Species)
+#The folowing for loop has a bug or the code behine it
 	for Species in Species:
-		print(Species)
 		for i, Individual in enumerate(list(Species)):
 			if i != 0:
 				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Individual]
