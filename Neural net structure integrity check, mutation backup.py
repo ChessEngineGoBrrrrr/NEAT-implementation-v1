@@ -10,7 +10,7 @@ Game_State = []
 Eval_List = []
 species = 40
 # how to install a package (pip install) go to cmd and do   cd C:\Users\user\AppData\Local\Programs\Python\Python311\Scripts and than pip install *insert package*
-def fen_to_input(fen): 
+def fen_to_input(fen=board.fen(): str) -> list[float]: 
     tempBit = []
     fen = fen.split()
     splitFen = fen[0].split("/")
@@ -104,7 +104,7 @@ def Generate_Neural_Net_Links():
 Master_Nodes = Generate_Neural_Net_Nodes()
 Master_Links = Generate_Neural_Net_Links()
 print(len(Master_Links))
-def Calculate_Species_Distance(Net_Num_1, Net_Num_2):
+def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int):
 	Inovation_List_Species_Distance = []
 	weight_difrance = 0
 	Excess_Amount = 0
@@ -192,7 +192,7 @@ def Calculate_Species_Distance(Net_Num_1, Net_Num_2):
 	if excess_is_1 == False:
 		print(Excess_Amount, Disjoint_Amount, weight_difrance, Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
 		return(Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
-def Mutate_Links(Net_Num):
+def Mutate_Links(Net_Num: int):
 	Conection_alredy_exists = False
 	i = 0
 	Conection_Num_1 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
@@ -251,7 +251,7 @@ def Mutate_Links(Net_Num):
 			Inovation_Num = 0
 			Inovation_Num_List.append([Conection_Num_2, Conection_Num_1, Inovation_Num])
 		return([Conection_Num_2, Conection_Num_1, "valid", round(random.uniform(-5,5), 2), Inovation_Num])
-def Mutate_Nodes(Net_Num):
+def Mutate_Nodes(Net_Num: int):
 	global Historic_Queue
 	Devide = False
 	#Finds a conection to add a node to
@@ -298,7 +298,7 @@ def Mutate_Nodes(Net_Num):
 		New_Layer = Master_Nodes[Net_Num][begining][2] + 1
 	Master_Nodes[Net_Num].append([len(Master_Nodes[Net_Num]), "hidden", New_Layer, round(random.uniform(-3,3), 2)])
 Historic_Queue = []
-def Layer_Ajust(Net_Num, queue):
+def Layer_Ajust(Net_Num: int, queue: list):
 #Forward breath for search algorthm moving all node that are direct "ofsprings" one layer forward
 	global Historic_Queue
 	Nodes_To_Increment = []
@@ -336,7 +336,7 @@ def Layer_Ajust(Net_Num, queue):
 							Temp_queue.append(Link_info[1])
 			queue = Temp_queue
 			Layer_Ajust(Net_Num, queue)
-def Mutate_Weight(Net_Num):
+def Mutate_Weight(Net_Num: int):
 	for Link_info in Master_Links[Net_Num]:
 		if random.randint(1, 10) < 7 and Link_info[2] != "invalid":
 			Link_info[3] = round(Link_info[3] + round(random.uniform(-0.2, 0.2), 2), 2)
@@ -344,13 +344,13 @@ def Mutate_Weight(Net_Num):
 			Link_info[2] = "valid"
 		elif random.randint(1, 10) < 2 and Link_info[2] != "invalid":
 			Link_info[3] = round(Link_info[3] + round(random.uniform(-2, 2), 2), 2)
-def Mutate_Bias(Net_Num):
+def Mutate_Bias(Net_Num: int):
 	for Node_Info in Master_Nodes[Net_Num]:
 		if random.randint(1, 10) < 3 and Node_Info[0] > 64:
 			Node_Info[3] = Node_Info[3] + round(random.uniform(-0.7,0.7), 2)
-def Disable_Conection(Net_Num, Conection_Num):
+def Disable_Conection(Net_Num: int, Conection_Num: int):
 	Master_Links[Net_Num][Conection_Num][2] = "disabled"
-def Fitness(Actual_Eval, Net_Eval):
+def Fitness(Actual_Eval: float, Net_Eval: float):
 	Fitness = 0
 	if Actual_Eval > Net_Eval and (Actual_Eval > 3 or Actual_Eval < -3):
 		Fitness = Actual_Eval - Net_Eval
@@ -363,7 +363,7 @@ def Fitness(Actual_Eval, Net_Eval):
 	if (Actual_Eval > 0 and Net_Eval > 0) or (Actual_Eval < 0 and Net_Eval < 0):
 		Fitness -= 1
 	return(Fitness)
-def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
+def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique=True: bool):
 	global Fitness_List
 	Max_Net_Num_1 = -1
 	Ofspring_Nodes = []
@@ -504,7 +504,7 @@ def Hoinky_Boinky(Net_Num_1, Net_Num_2, Net_2_Is_Unique=True):
 Curent_Layer_ToBe_Calculated = 1
 Current_Layer = []
 Caclulate_Return = 1
-def Calculate(Net_Num):
+def Calculate(Net_Num: int):
 	global Current_Layer
 	Sum_Current_Node = 0
 	Exists_Alredy = False
@@ -572,7 +572,7 @@ for j in range(len(Master_Links)):
 			Mutate_Bias(j)
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
-def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
+def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float):
 	global Fitness_List
 	Global_Avrage = 0
 	Total_Ofsprings = 0
@@ -600,9 +600,9 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[0]]])
 	print(Species)
 	for Species in Species:
-		for Individual in Species:
-			if l != 0:
 		print(Species)
+		for i, Individual in enumerate(list(Species)):
+			if i != 0:
 				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Individual]
 	print( Species_Avrage_Fitness_List)
 	for Offspring_Amout in Species_Avrage_Fitness_List:
@@ -629,7 +629,7 @@ def Next_Generation_Generate(Last_Species_Amout_More, Allowed_Species_Distance):
 		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Species_Avrage_Fitness_List[j][2]
 	print(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
 	return(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
-def Fitness_Calculate():
+def Fitness_Calculate() -> list[float]:
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
 	global Caclulate_Return
