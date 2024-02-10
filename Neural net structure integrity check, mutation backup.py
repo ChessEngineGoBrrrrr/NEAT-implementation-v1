@@ -1,4 +1,5 @@
 import random
+import typing
 Inovation_Num_List = []
 fitness = []
 import chess
@@ -10,7 +11,7 @@ Game_State = []
 Eval_List = []
 species = 40
 # how to install a package (pip install) go to cmd and do   cd C:\Users\user\AppData\Local\Programs\Python\Python311\Scripts and than pip install *insert package*
-def fen_to_input(fen=board.fen(): str) -> list[float]: 
+def fen_to_input(fen:str = board.fen()) -> list[float]: 
     tempBit = []
     fen = fen.split()
     splitFen = fen[0].split("/")
@@ -363,7 +364,7 @@ def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
 	if (Actual_Eval > 0 and Net_Eval > 0) or (Actual_Eval < 0 and Net_Eval < 0):
 		Fitness -= 1
 	return(Fitness)
-def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique=True: bool):
+def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True):
 	global Fitness_List
 	Max_Net_Num_1 = -1
 	Ofspring_Nodes = []
@@ -558,18 +559,19 @@ def Calculate(Net_Num: int):
 		Curent_Layer_ToBe_Calculated = 1 + Curent_Layer_ToBe_Calculated
 	Calculate(Net_Num)
 Bad_Games = []
-for j in range(len(Master_Links)):
-	for i in range(200):
-		chance = random.randint(1, 10)
-		if chance > 8:
-			if len(Master_Links[j]) > 0:	
-				Mutate_Nodes(j)
-			else:	
+if __name__ == "__main__":
+	for j in range(len(Master_Links)):
+		for i in range(200):
+			chance = random.randint(1, 10)
+			if chance > 8:
+				if len(Master_Links[j]) > 0:	
+					Mutate_Nodes(j)
+				else:	
+					Master_Links[j].append(Mutate_Links(j))
+			if chance > 2 and chance <= 8:
 				Master_Links[j].append(Mutate_Links(j))
-		if chance > 2 and chance <= 8:
-			Master_Links[j].append(Mutate_Links(j))
-		if chance <= 2:
-			Mutate_Bias(j)
+			if chance <= 2:
+				Mutate_Bias(j)
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
 def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float):
