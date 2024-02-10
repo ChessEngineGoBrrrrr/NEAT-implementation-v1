@@ -92,12 +92,12 @@ def fen_to_input(fen:str = board.fen()) -> list[float]:
     else:
         tempBit.append(-1)
     return(tempBit)   
-def Generate_Neural_Net_Nodes():
+def Generate_Neural_Net_Nodes() -> list:
 	Master_Nodes = []
 	for n in range(512):
 		Master_Nodes.append([[ 0 , "input" , 0,round(random.uniform(-3,3), 2) ],[ 1 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 2 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 3 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 4 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 5 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 6 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 7 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 8 , "input" , 0 ,round(random.uniform(-3,3), 2)], [ 9 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 10 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 11 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 12 , "input" , 0, round(random.uniform(-3,3), 2) ], [ 13 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 14 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 15 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 16 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 17 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 18 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 19 , "input" , 0, round(random.uniform(-3,3), 2) ], [ 20 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 21 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 22 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 23 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 24 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 25 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 26 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 27 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 28 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 29 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 30 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 31 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 32 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 33 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 34 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 35 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 36 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 37 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 38 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 39 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 40 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 41 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 42 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 43 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 44 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 45 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 46 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 47 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 48 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 49 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 50 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 51 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 52 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 53 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 54 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 55 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 56 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 57 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 58 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 59 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 60 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 61 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 62 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 63 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 64 , "input" , 0,round(random.uniform(-3,3), 2) ], [ 65 , "output" , 1,round(random.uniform(-3,3), 2) ]])
 	return(Master_Nodes)
-def Generate_Neural_Net_Links():
+def Generate_Neural_Net_Links() -> list:
 	Master_Links = []
 	for n in range(512):
 		Master_Links.append([])
@@ -364,7 +364,7 @@ def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
 	if (Actual_Eval > 0 and Net_Eval > 0) or (Actual_Eval < 0 and Net_Eval < 0):
 		Fitness -= 1
 	return(Fitness)
-def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True):
+def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) -> list:
 	global Fitness_List
 	Max_Net_Num_1 = -1
 	Ofspring_Nodes = []
@@ -574,7 +574,7 @@ if __name__ == "__main__":
 				Mutate_Bias(j)
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
-def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float):
+def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float) -> list:
 	global Fitness_List
 	Global_Avrage = 0
 	Total_Ofsprings = 0
@@ -632,7 +632,7 @@ def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Dist
 	for Offspring_Amout in Species_Avrage_Fitness_List:
 		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Offspring_Amout[2]
 	print(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
-	return(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
+	return([Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault])
 def Fitness_Calculate() -> list[float]:
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
