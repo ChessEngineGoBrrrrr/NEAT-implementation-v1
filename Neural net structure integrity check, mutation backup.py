@@ -584,40 +584,43 @@ def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Dist
 		Allowed_Species_Distance -= 1
 	else:
 		Allowed_Species_Distance += 1
-	Species = [[0]]
+	Species_List = [[0]]
 	for j in range(len(Master_Nodes)-1):
 		Species_Has_Been_Found = False
-		for i in range(len(Species)):
-			if Calculate_Species_Distance(j + 1, Species[i][0]) < Allowed_Species_Distance:
-				Species[i].append(j + 1)
+		for i in range(len(Species_List)):
+			if Calculate_Species_Distance(j + 1, Species_List[i][0]) < Allowed_Species_Distance:
+				Species_List[i].append(j + 1)
 				Species_Has_Been_Found = True
-				print(Species, "suptimetmus")
+				print(Species_List, "suptimetmus")
 				break
 			else:
 				Species_Has_Been_Found = False
 		if Species_Has_Been_Found == False:
-			Species.append([j + 1])
-			print(Species, 'sorticoftarmilnof')
-	for Species in Species:
-		Species_Avrage_Fitness_List.append([j, Fitness_List[Species[0]]])
+			Species_List.append([j + 1])
+			print(Species_List, 'sorticoftarmilnof')
+	print(Species_List, "el uno")
+	for i, Species in enumerate(Species_List):
+		Species_Avrage_Fitness_List.append([i, Fitness_List[Species[0]]])
 #The folowing for loop has a bug or the code behine it
-	for Species in Species:
-		for i, Individual in enumerate(list(Species)):
-			if i != 0:
-				Species_Avrage_Fitness_List[j][1] = Species_Avrage_Fitness_List[j][1] + Fitness_List[Individual]
+	print(Species_List, 'el racista')
+	for i, Species in enumerate(Species_List):
+		print(Species, len(Species), len(Species_Avrage_Fitness_List), Species_Avrage_Fitness_List)
+		for j, Individual in enumerate(Species):
+			if j != 0:
+				Species_Avrage_Fitness_List[i][1] = Species_Avrage_Fitness_List[i][1] + Fitness_List[Individual]
 	print( Species_Avrage_Fitness_List)
 	for Offspring_Amout in Species_Avrage_Fitness_List:
-		Offspring_Amout[1] = Offspring_Amout[1]/(len(Species[Offspring_Amout[0]])*len(Species[Offspring_Amout[0]]))
+		Offspring_Amout[1] = Offspring_Amout[1]/(len(Species_List[Offspring_Amout[0]])*len(Species_List[Offspring_Amout[0]]))
 		Global_Avrage = Global_Avrage + Offspring_Amout[1]
 	Global_Avrage = Global_Avrage/len(Species_Avrage_Fitness_List)
 	for Offspring_Amout in Species_Avrage_Fitness_List:
-		Offspring_Amout.append(Offspring_Amout[1]/Global_Avrage*len(Species[Offspring_Amout[0]]))
+		Offspring_Amout.append(Offspring_Amout[1]/Global_Avrage*len(Species_List[Offspring_Amout[0]]))
 		Total_Ofsprings = Offspring_Amout[2] + Total_Ofsprings
 	Total_Ofsprings = 512/Total_Ofsprings
 	for Offspring_Amout in Species_Avrage_Fitness_List:
 		Offspring_Amout[2] = round(Offspring_Amout[2]*Total_Ofsprings, 0)
 		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Offspring_Amout[2]
-	print(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
+	print(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
 	if Amout_off_Ofsprings_That_Resault > 512:
 		for j in range(len(Species_Avrage_Fitness_List)):
 			if Species_Avrage_Fitness_List[j][2] > 50:
@@ -626,10 +629,10 @@ def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Dist
 	if Amout_off_Ofsprings_That_Resault < 512:
 		Species_Avrage_Fitness_List[0][2] = Species_Avrage_Fitness_List[0][2] + (512 - Amout_off_Ofsprings_That_Resault)	
 	Amout_off_Ofsprings_That_Resault = 0
-	for j in range(len(Species_Avrage_Fitness_List)):
-		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Species_Avrage_Fitness_List[j][2]
-	print(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
-	return(Species_Avrage_Fitness_List, Species,Amout_off_Ofsprings_That_Resault)
+	for Offspring_Amout in Species_Avrage_Fitness_List:
+		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Offspring_Amout[2]
+	print(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
+	return(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
 def Fitness_Calculate() -> list[float]:
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
@@ -671,31 +674,31 @@ def Fitness_Calculate() -> list[float]:
 		if Individual_Fitness + 100 > 0:	
 			Individual_Fitness = round((Individual_Fitness+100) * (Individual_Fitness+100), 2)
 		else:
-			Individual_Fitness = round(Individual_Fitness/-70, 2)
+			Individual_Fitness = round(Individual_Fitness/-250, 2)
 	print(Fitness_List)
 	return(Fitness_List)
 Fitness_List = Fitness_Calculate()
 def Make_New_Population():
 	global Fitness_List
-	bullshit = Next_Generation_Generate(True, 60)
-	Species = bullshit[1]
-	Allowed_Offspring_List = bullshit[0]
+	resaults = Next_Generation_Generate(True, 60)
+	Species_List= resaults[1]
+	Allowed_Offspring_List = resaults[0]
 	Copy_Master_Links = Master_Links[:]
 	Copy_Master_Nodes = Master_Nodes[:]
 	Roulette_List = []
 	Sum_Species = 0
 	index = 0
 	Parent_2 = -1
-	for Species_Allowed_Offsprings,Species in zip(Allowed_Offspring_List, Species):
+	for Species_Allowed_Offsprings,Species in zip(Allowed_Offspring_List, Species_List):
 		Parent_2 = -1
 		Roulette_List = []
 		Sum_Species = 0
 		for Individual in Species:
 			Sum_Species = Sum_Species + Fitness_List[Individual]
 		Roulette_List = [round(Fitness_List[Species[0]]/Sum_Species*100, 2)]	
-		for Individual in Species:		
-			if i != 0:
-				Roulette_List.append(round(Fitness_List[Individual]/Sum_Species*100 + Roulette_List[i - 1], 2))
+		for j, Individual in enumerate(Species):		
+			if j != 0:
+				Roulette_List.append(round(Fitness_List[Individual]/Sum_Species*100 + Roulette_List[j - 1], 2))
 		print(Roulette_List)
 		print(Species_Allowed_Offsprings[2])
 		if len(Species) == 1:
