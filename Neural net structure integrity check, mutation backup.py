@@ -1,5 +1,5 @@
 import random
-import typing
+from typing import Union
 Inovation_Num_List = []
 fitness = []
 import chess
@@ -193,7 +193,7 @@ def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 	if excess_is_1 == False:
 		print(Excess_Amount, Disjoint_Amount, weight_difrance, Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
 		return(Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
-def Mutate_Links(Net_Num: int) -> list:
+def Mutate_Links(Net_Num: int) -> list[Union[float, str]]:
 	Conection_alredy_exists = False
 	i = 0
 	Conection_Num_1 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
@@ -352,7 +352,7 @@ def Mutate_Bias(Net_Num: int)-> None:
 def Disable_Conection(Net_Num: int, Conection_Num: int) -> None:
 	Master_Links[Net_Num][Conection_Num][2] = "disabled"
 def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
-	Fitness = 0
+	Fitness: float = 0
 	if Actual_Eval > Net_Eval and (Actual_Eval > 3 or Actual_Eval < -3):
 		Fitness = Actual_Eval - Net_Eval
 	elif Actual_Eval > Net_Eval and (Actual_Eval < 1.5 and Actual_Eval > -1.5):
@@ -364,7 +364,7 @@ def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
 	if (Actual_Eval > 0 and Net_Eval > 0) or (Actual_Eval < 0 and Net_Eval < 0):
 		Fitness -= 1
 	return(Fitness)
-def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) -> list:
+def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) -> list[Union[float, str]]:
 	global Fitness_List
 	Max_Net_Num_1 = -1
 	Ofspring_Nodes = []
@@ -507,8 +507,8 @@ Current_Layer = []
 Caclulate_Return = 1
 def Calculate(Net_Num: int) -> None:
 	global Current_Layer
-	Sum_Current_Node = 0
-	Exists_Alredy = False
+	Sum_Current_Node: float = 0
+	Exists_Alredy: bool = False
 	global Caclulate_Return
 	global Curent_Layer_ToBe_Calculated
 	if len(Current_Layer) > 0:	
@@ -574,12 +574,12 @@ if __name__ == "__main__":
 				Mutate_Bias(j)
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
-def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float) -> list:
+def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Distance: float) -> list[list[float]]:
 	global Fitness_List
-	Global_Avrage = 0
-	Total_Ofsprings = 0
-	Amout_off_Ofsprings_That_Resault = 0
-	Species_Avrage_Fitness_List = []
+	Global_Avrage: float = 0
+	Total_Ofsprings: float = 0
+	Amout_off_Ofsprings_That_Resault: int = 0
+	Species_Avrage_Fitness_List: list[float] = []
 	if Last_Species_Amout_More == True:
 		Allowed_Species_Distance -= 1
 	else:
@@ -632,14 +632,14 @@ def Next_Generation_Generate(Last_Species_Amout_More: bool, Allowed_Species_Dist
 	for Offspring_Amout in Species_Avrage_Fitness_List:
 		Amout_off_Ofsprings_That_Resault = Amout_off_Ofsprings_That_Resault + Offspring_Amout[2]
 	print(Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault)
-	return([Species_Avrage_Fitness_List, Species_List,Amout_off_Ofsprings_That_Resault])
+	return([Species_Avrage_Fitness_List, Species_List])
 def Fitness_Calculate() -> list[float]:
 	global Curent_Layer_ToBe_Calculated
 	global Current_Layer
 	global Caclulate_Return
-	Batch_Size = 10
+	Batch_Size: int = 10
 	game = random.randint(0, len(File_Procesed_New) - 1)
-	Fitness_List = []
+	Fitness_List: list[float] = []
 	for j in range(512):
 		chess.Board(File_Procesed_New[game][1])
 		if File_Procesed_New[game][0][1] == "mate":
@@ -667,7 +667,6 @@ def Fitness_Calculate() -> list[float]:
 			print(game)
 			Calculate(j)
 			Fitness_List[j] = Fitness_List[j] + Fitness(Eval, Caclulate_Return)
-	Max_Fitness = 0
 	for Individual_Fitness in Fitness_List:
 		Individual_Fitness = round(Individual_Fitness/Batch_Size, 2)
 		Individual_Fitness = Individual_Fitness*-1
@@ -730,6 +729,7 @@ def Make_New_Population() -> None:
 				index += 1
 			print(Copy_Master_Links[index - 1])
 	print(Copy_Master_Links)
+print(Master_Nodes)
 Make_New_Population()
 Offspring_Lst = Hoinky_Boinky(0,1)
 print(Offspring_Lst)
