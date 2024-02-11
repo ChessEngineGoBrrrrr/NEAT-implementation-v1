@@ -193,7 +193,7 @@ def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 	if excess_is_1 == False:
 		print(Excess_Amount, Disjoint_Amount, weight_difrance, Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
 		return(Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
-def Mutate_Links(Net_Num: int):
+def Mutate_Links(Net_Num: int) -> list:
 	Conection_alredy_exists = False
 	i = 0
 	Conection_Num_1 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
@@ -252,7 +252,7 @@ def Mutate_Links(Net_Num: int):
 			Inovation_Num = 0
 			Inovation_Num_List.append([Conection_Num_2, Conection_Num_1, Inovation_Num])
 		return([Conection_Num_2, Conection_Num_1, "valid", round(random.uniform(-5,5), 2), Inovation_Num])
-def Mutate_Nodes(Net_Num: int):
+def Mutate_Nodes(Net_Num: int) -> None:
 	global Historic_Queue
 	Devide = False
 	#Finds a conection to add a node to
@@ -299,7 +299,7 @@ def Mutate_Nodes(Net_Num: int):
 		New_Layer = Master_Nodes[Net_Num][begining][2] + 1
 	Master_Nodes[Net_Num].append([len(Master_Nodes[Net_Num]), "hidden", New_Layer, round(random.uniform(-3,3), 2)])
 Historic_Queue = []
-def Layer_Ajust(Net_Num: int, queue: list):
+def Layer_Ajust(Net_Num: int, queue: list) -> None:
 #Forward breath for search algorthm moving all node that are direct "ofsprings" one layer forward
 	global Historic_Queue
 	Nodes_To_Increment = []
@@ -337,7 +337,7 @@ def Layer_Ajust(Net_Num: int, queue: list):
 							Temp_queue.append(Link_info[1])
 			queue = Temp_queue
 			Layer_Ajust(Net_Num, queue)
-def Mutate_Weight(Net_Num: int):
+def Mutate_Weight(Net_Num: int) -> None:
 	for Link_info in Master_Links[Net_Num]:
 		if random.randint(1, 10) < 7 and Link_info[2] != "invalid":
 			Link_info[3] = round(Link_info[3] + round(random.uniform(-0.2, 0.2), 2), 2)
@@ -345,11 +345,11 @@ def Mutate_Weight(Net_Num: int):
 			Link_info[2] = "valid"
 		elif random.randint(1, 10) < 2 and Link_info[2] != "invalid":
 			Link_info[3] = round(Link_info[3] + round(random.uniform(-2, 2), 2), 2)
-def Mutate_Bias(Net_Num: int):
+def Mutate_Bias(Net_Num: int)-> None:
 	for Node_Info in Master_Nodes[Net_Num]:
 		if random.randint(1, 10) < 3 and Node_Info[0] > 64:
 			Node_Info[3] = Node_Info[3] + round(random.uniform(-0.7,0.7), 2)
-def Disable_Conection(Net_Num: int, Conection_Num: int):
+def Disable_Conection(Net_Num: int, Conection_Num: int) -> None:
 	Master_Links[Net_Num][Conection_Num][2] = "disabled"
 def Fitness(Actual_Eval: float, Net_Eval: float) -> float:
 	Fitness = 0
@@ -505,7 +505,7 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 Curent_Layer_ToBe_Calculated = 1
 Current_Layer = []
 Caclulate_Return = 1
-def Calculate(Net_Num: int):
+def Calculate(Net_Num: int) -> None:
 	global Current_Layer
 	Sum_Current_Node = 0
 	Exists_Alredy = False
@@ -516,7 +516,7 @@ def Calculate(Net_Num: int):
 			for j in range(len(Current_Layer)):
 				if Current_Layer[j][0] == 65:
 					Caclulate_Return = Current_Layer[j][1]
-					return(0)
+					return()
 	#caLculates layer by layer biginning from the first hidden layer.Traces back conections and calculates like that
 	First_Layer = fen_to_input(chess.Board().fen())
 	Buffer_Layer = []
@@ -678,7 +678,7 @@ def Fitness_Calculate() -> list[float]:
 	print(Fitness_List)
 	return(Fitness_List)
 Fitness_List = Fitness_Calculate()
-def Make_New_Population():
+def Make_New_Population() -> None:
 	global Fitness_List
 	resaults = Next_Generation_Generate(True, 60)
 	Species_List= resaults[1]
