@@ -1,7 +1,6 @@
 import random
 from typing import Union
 Inovation_Num_List = []
-fitness = []
 import chess
 board = chess.Board()
 import os
@@ -12,11 +11,11 @@ Eval_List = []
 species = 40
 # how to install a package (pip install) go to cmd and do   cd C:\Users\user\AppData\Local\Programs\Python\Python311\Scripts and than pip install *insert package*
 def fen_to_input(fen:str = board.fen()) -> list[float]: 
-    tempBit = []
+    tempBit: list[int] = []
     fen = fen.split()
-    splitFen = fen[0].split("/")
-    for s in range(len(splitFen)):
-        for letter in splitFen[s]:
+    split_fen = fen[0].split("/")
+    for s in range(len(split_fen)):
+        for letter in split_fen[s]:
             if letter == "w":
                 tempBit.append(1)
             if letter == "r":
@@ -107,12 +106,11 @@ Master_Links = Generate_Neural_Net_Links()
 print(len(Master_Links))
 def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 	Inovation_List_Species_Distance = []
-	weight_difrance = 0
-	Excess_Amount = 0
-	Disjoint_Amount = 0
-	Max_Net_Num_1 = -1
-	Max_Net_Num_2 = -1
-	important1 = 3
+	weight_difrance: float = 0
+	Excess_Amount: int = 0
+	Disjoint_Amount: int = 0
+	Max_Net_Num_1: int = -1
+	Max_Net_Num_2: int = -1
 	#finds excess genes
 	for j in range(len(Master_Links[Net_Num_1])):
 		if Max_Net_Num_1 < Master_Links[Net_Num_1][j][4]:
@@ -194,9 +192,9 @@ def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 		print(Excess_Amount, Disjoint_Amount, weight_difrance, Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
 		return(Excess_Amount/len(Master_Links[Net_Num_2]) + Disjoint_Amount/len(Master_Links[Net_Num_2]) + weight_difrance)
 def Mutate_Links(Net_Num: int) -> list[Union[float, str]]:
-	Conection_alredy_exists = False
+	Conection_alredy_exists: bool = False
 	i = 0
-	Conection_Num_1 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
+	Conection_Num_1: int = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
 	#finds to nodes to conect
 	while True:
 		Conection_Num_1 = random.randint(0, len(Master_Nodes[Net_Num]) - 1)
@@ -638,7 +636,7 @@ def Fitness_Calculate() -> list[float]:
 	global Current_Layer
 	global Caclulate_Return
 	Batch_Size: int = 10
-	game = random.randint(0, len(File_Procesed_New) - 1)
+	game: int = random.randint(0, len(File_Procesed_New) - 1)
 	Fitness_List: list[float] = []
 	for j in range(512):
 		chess.Board(File_Procesed_New[game][1])
@@ -680,7 +678,7 @@ Fitness_List = Fitness_Calculate()
 def Make_New_Population() -> None:
 	global Fitness_List
 	resaults = Next_Generation_Generate(True, 60)
-	Species_List= resaults[1]
+	Species_List = resaults[1]
 	Allowed_Offspring_List = resaults[0]
 	Copy_Master_Links = Master_Links[:]
 	Copy_Master_Nodes = Master_Nodes[:]
