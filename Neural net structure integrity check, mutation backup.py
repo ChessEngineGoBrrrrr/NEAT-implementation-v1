@@ -384,8 +384,8 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 	for j in range(len(Master_Links[Net_Num_2])):
 		if Max_Net_Num_2 < Master_Links[Net_Num_2][j][4]:
 			Max_Net_Num_2 = Master_Links[Net_Num_2][j][4]
-	Net_Conections_Copy_1 = Master_Links[Net_Num_1].copy()
-	Net_Conections_Copy_2 = Master_Links[Net_Num_2].copy()
+	Net_Conections_Copy_1 = Master_Links[Net_Num_1].copy.deepcopy()
+	Net_Conections_Copy_2 = Master_Links[Net_Num_2].copy.deepcopy()
 	if Max_Net_Num_1 < Max_Net_Num_2:
 		excess_is_1 = False
 	else:
@@ -679,8 +679,8 @@ def Make_New_Population() -> None:
 	resaults = Next_Generation_Generate(True, 50)
 	Species_List: list[list[int]] = resaults[1]
 	Allowed_Offspring_List: list = resaults[0]
-	Copy_Master_Links = Master_Links[:]
-	Copy_Master_Nodes = Master_Nodes[:]
+	Copy_Master_Links = Master_Links.copy.deepcopy()
+	Copy_Master_Nodes = Master_Nodes.copy.deepcopy()
 	Roulette_List: list[float] = []
 	Sum_Species: float = 0.0
 	index: int = 0
