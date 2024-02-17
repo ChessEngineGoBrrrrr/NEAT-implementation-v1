@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import time
+import copy
 start = time.time()
 board = chess.Board()
 Inovation_Num_List: list[list[float]] = []
@@ -375,7 +376,7 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 		for j in range(2):
 			Mutate_Nodes(0)
 			Mutate_Links(0)
-	important1 = 3
+	important1: bool = False
 	Ofspring_Conections = []
 	#finds excess genes
 	for j in range(len(Master_Links[Net_Num_1])):
@@ -384,90 +385,47 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 	for j in range(len(Master_Links[Net_Num_2])):
 		if Max_Net_Num_2 < Master_Links[Net_Num_2][j][4]:
 			Max_Net_Num_2 = Master_Links[Net_Num_2][j][4]
-	Net_Conections_Copy_1 = Master_Links[Net_Num_1].copy.deepcopy()
-	Net_Conections_Copy_2 = Master_Links[Net_Num_2].copy.deepcopy()
-	if Max_Net_Num_1 < Max_Net_Num_2:
-		excess_is_1 = False
-	else:
-		excess_is_1 = True
-	if excess_is_1 == True:
-		for j in range(len(Master_Links[Net_Num_1])):
-			if Master_Links[Net_Num_1][j][4] > Max_Net_Num_2:
-				Net_Conections_Copy_1[j][4] = "Excess"
-	else:
-		for j in range(len(Master_Links[Net_Num_2])):
-			if Master_Links[Net_Num_2][j][4] > Max_Net_Num_1:
-				Net_Conections_Copy_2[j][4] = "Excess"
-	#finds disjoint genes
-	for j in range(len(Net_Conections_Copy_1)):
-		if Net_Conections_Copy_1[j][4] != "Excess":
-			Disjoint = True
-			for i in range(len(Net_Conections_Copy_2)):
-				if Net_Conections_Copy_1[j][4] == Net_Conections_Copy_2[i][4]:
-					Disjoint = False		
-		else:
-			Disjoint = False
-		if Disjoint == True:
-			Net_Conections_Copy_1[j][4] = "Disjoint"
-	for j in range(len(Net_Conections_Copy_2)):
-		if Net_Conections_Copy_2[j][4] != "Excess":
-			Disjoint = True
-			for i in range(len(Net_Conections_Copy_1)):
-				if Net_Conections_Copy_2[j][4] == Net_Conections_Copy_1[i][4]:
-					Disjoint = False		
-		else:
-			Disjoint = False
-		if Disjoint == True:
-			Net_Conections_Copy_2[j][4] = "Disjoint"
+	net_conections_1 = Master_Links[Net_Num_1]
+	net_conections_2 = Master_Links[Net_Num_2]
 	#Does the breeding depending on fitness(The last else asumes that after checking wich is biger they are equal)
-	for i in range(len(Master_Links[Net_Num_2])):
-		for j in range(len(Inovation_Num_List)):
-			if Master_Links[Net_Num_2][i][0] == Inovation_Num_List[j][0] and Master_Links[Net_Num_2][i][1] == Inovation_Num_List[j][1]:
-				Master_Links[Net_Num_2][i][4] = Inovation_Num_List[j][2]
-	for i in range(len(Master_Links[Net_Num_1])):
-		for j in range(len(Inovation_Num_List)):
-			if Master_Links[Net_Num_1][i][0] == Inovation_Num_List[j][0] and Master_Links[Net_Num_1][i][1] == Inovation_Num_List[j][1]:
-				Master_Links[Net_Num_1][i][4] = Inovation_Num_List[j][2]
-	print(Net_Conections_Copy_1,"space si demanded of me right?",Net_Conections_Copy_2, "im number 111111")
+	print(net_conections_1,"space si demanded of me right?",net_conections_2, "im number 111111")
 	if Fitness_List[Net_Num_1] > Fitness_List[Net_Num_2]:
-		for j in range(len(Net_Conections_Copy_1)):
-			if Net_Conections_Copy_1[j][4] != "Excess" and Net_Conections_Copy_1[j][4] != "Disjoint":
-				if round(random.uniform(0, 2), 2) < 1.3:
-					Ofspring_Conections.append(Master_Links[Net_Num_1][j])
-				else:
-					for i in range(len(Net_Conections_Copy_2)):
-						if Net_Conections_Copy_2[i][4] == Net_Conections_Copy_1[j][4]:
-							Ofspring_Conections.append(Master_Links[Net_Num_2][i])
-			elif Net_Conections_Copy_1[j][4] == "Excess" or Net_Conections_Copy_1[j][4] == "Disjoint":
-				Ofspring_Conections.append(Master_Links[Net_Num_1][j])
+		Ofspring_Conections = copy.deepcopy(Master_Links[Net_Num_1])
+		for i, conection_info_1 in enumerate(net_conections_1):
+			for j, conection_info_2 in enumerate(net_conections_2):
+				if conection_info_1[4] == conection_info_2[4]:
+					if round(random.uniform(0, 2), 2) < 1.5:
+						Ofspring_Conections[i][3] == conection_info_1[3]
+					else:
+						Ofspring_Conections[i][3] == conection_info_2[3]
 	elif Fitness_List[Net_Num_1] < Fitness_List[Net_Num_2]:
-		for j in range(len(Net_Conections_Copy_2)):
-			if Net_Conections_Copy_2[j][4] != "Excess" and Net_Conections_Copy_2[j][4] != "Disjoint":
-				if round(random.uniform(0, 2), 2) < 1.3:
-					Ofspring_Conections.append(Master_Links[Net_Num_2][j])
-				else:
-					for i in range(len(Net_Conections_Copy_1)):
-						if Net_Conections_Copy_1[i][4] == Net_Conections_Copy_2[j][4]:
-							Ofspring_Conections.append(Master_Links[Net_Num_1][i])
-			elif Net_Conections_Copy_2[j][4] == "Excess" or Net_Conections_Copy_1[j][4] == "Disjoint":
-				Ofspring_Conections.append(Master_Links[Net_Num_2][j])
+		Ofspring_Conections = copy.deepcopy(Master_Links[Net_Num_2])
+		for i, conection_info_2 in enumerate(net_conections_2):
+			for j, conection_info_1 in enumerate(net_conections_1):
+				if conection_info_1[4] == conection_info_2[4]:
+					if round(random.uniform(0, 2), 2) < 1.5:
+						Ofspring_Conections[i][3] == conection_info_2[3]
+					else:
+						Ofspring_Conections[i][3] == conection_info_1[3]
 	else:
-		for j in range(len(Net_Conections_Copy_1)):
-			if Net_Conections_Copy_1[j][4] != "Excess" and Net_Conections_Copy_1[j][4] != "Disjoint":
-				if round(random.uniform(0, 2), 2) < 1:
-					Ofspring_Conections.append(Master_Links[Net_Num_1][j])
-				else:
-					for i in range(len(Net_Conections_Copy_2)):
-						if Net_Conections_Copy_2[i][4] == Net_Conections_Copy_1[j][4]:
-							Ofspring_Conections.append(Master_Links[Net_Num_2][i])
-			if round(random.uniform(0, 2), 2) < 1 and important1 == 3:
-				important1 = 1
-			else:
-				important1 = 2
-			if important1 == 1 and Net_Conections_Copy_1[j][4] == "Excess" and Net_Conections_Copy_1[j][4] == "Disjoint":
-				Ofspring_Conections.append(Master_Links[Net_Num_1][j])
-			else:
-				Ofspring_Conections.append(Master_Links[Net_Num_2][i])
+		if random.uniform(0, 2) < 1:
+			Ofspring_Conections = copy.deepcopy( Master_Links[Net_Num_1])
+			for i, conection_info_1 in enumerate(net_conections_1):
+				for j, conection_info_2 in enumerate(net_conections_2):
+					if conection_info_1[4] == conection_info_2[4]:
+						if round(random.uniform(0, 2), 2) < 1.5:
+							Ofspring_Conections[i][3] == conection_info_1[3]
+						else:
+							Ofspring_Conections[i][3] == conection_info_2[3]
+		else:
+			Ofspring_Conections = copy.deepcopy(Master_Links[Net_Num_2])
+			for i, conection_info_2 in enumerate(net_conections_2):
+				for j, conection_info_1 in enumerate(net_conections_1):
+					if conection_info_1[4] == conection_info_2[4]:
+						if round(random.uniform(0, 2), 2) < 1.5:
+							Ofspring_Conections[i][3] == conection_info_2[3]
+						else:
+							Ofspring_Conections[i][3] == conection_info_1[3]
 	print(Ofspring_Conections, "im number 222222")
 	#makes sure the inovation nums are correct
 	for i in range(len(Master_Links[Net_Num_2])):
@@ -679,8 +637,8 @@ def Make_New_Population() -> None:
 	resaults = Next_Generation_Generate(True, 50)
 	Species_List: list[list[int]] = resaults[1]
 	Allowed_Offspring_List: list = resaults[0]
-	Copy_Master_Links = Master_Links.copy.deepcopy()
-	Copy_Master_Nodes = Master_Nodes.copy.deepcopy()
+	Copy_Master_Links = copy.deepcopy( Master_Links)
+	Copy_Master_Nodes = copy.deepcopy(Master_Nodes)
 	Roulette_List: list[float] = []
 	Sum_Species: float = 0.0
 	index: int = 0
