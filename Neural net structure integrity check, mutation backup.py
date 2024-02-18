@@ -103,6 +103,8 @@ def Generate_Neural_Net_Links() -> list:
 	for _ in range(512):
 		Master_Links.append([])
 	return(Master_Links)
+Master_Nodes = Generate_Neural_Net_Nodes()
+Master_Links = Generate_Neural_Net_Links()
 def Calculate_Species_Distance(Net_Num_1: int, Net_Num_2: int) -> float:
 	global Inovation_Num_List
 	Inovation_List_Species_Distance = []
@@ -646,6 +648,18 @@ def Make_New_Population() -> None:
 				Copy_Master_Links[index] = Procreation_resault[0]
 				Copy_Master_Nodes[index] = Procreation_resault[1]				
 				index += 1
+	for net_links in Master_Links:
+		for _ in range(6):
+			chance = random.randint(1, 20)
+			if chance > 15:
+				if len(Master_Links[j]) > 0:	
+					Mutate_Nodes(j)
+				else:	
+					Master_Links[j].append(Mutate_Links(j))
+			if chance > 4 and chance <= 15:
+				Master_Links[j].append(Mutate_Links(j))
+			if chance <= 1:
+				Mutate_Bias(j)
 	Master_Links = copy.deepcopy(Copy_Master_Links)
 	Master_Nodes = copy.deepcopy(Copy_Master_Nodes)
 if __name__ == "__main__":
@@ -665,6 +679,6 @@ if __name__ == "__main__":
 			if chance <= 2:
 				Mutate_Bias(j)
 	Fitness_List = Fitness_Calculate()
-	Hoinky_Boinky(0, 1)
+	Make_New_Population()
 	end = time.time()
 	print(end - start)
