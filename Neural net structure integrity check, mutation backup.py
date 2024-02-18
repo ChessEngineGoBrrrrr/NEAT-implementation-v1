@@ -601,6 +601,8 @@ def Fitness_Calculate() -> list[float]:
 	return(Fitness_List)
 def Make_New_Population() -> None:
 	global Fitness_List
+	global Master_Links
+	global Master_Nodes
 	resaults = Next_Generation_Generate(True, 50)
 	Species_List: list[list[int]] = resaults[1]
 	Allowed_Offspring_List: list = resaults[0]
