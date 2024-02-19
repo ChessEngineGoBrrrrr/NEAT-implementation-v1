@@ -1,9 +1,6 @@
 import random
 from typing import Union, Any
 import chess
-import os
-import re
-import sys
 import time
 import copy
 board = chess.Board()
@@ -438,7 +435,7 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 		for j in range(len(Inovation_Num_List)):
 			if Master_Links[Net_Num_1][i][0] == Inovation_Num_List[j][0] and Master_Links[Net_Num_1][i][1] == Inovation_Num_List[j][1]:
 				Master_Links[Net_Num_1][i][4] = Inovation_Num_List[j][2]
-	return(Ofspring_Conections)		
+	return([Ofspring_Conections, Ofspring_Nodes])		
 Curent_Layer_ToBe_Calculated = 1
 Current_Layer: list[list[int]] = []
 Caclulate_Return: float = 1
@@ -650,7 +647,10 @@ def Make_New_Population() -> None:
 				Copy_Master_Links[index] = Procreation_resault[0]
 				Copy_Master_Nodes[index] = Procreation_resault[1]				
 				index += 1
-	for net_links in Master_Links:
+	Master_Links = copy.deepcopy(Copy_Master_Links)
+	Master_Nodes = copy.deepcopy(Copy_Master_Nodes)
+	print(Master_Links[0], "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Master_Nodes[0])
+	for j in range(len(Master_Links)):
 		for _ in range(6):
 			chance = random.randint(1, 20)
 			if chance > 15:
@@ -662,14 +662,13 @@ def Make_New_Population() -> None:
 				Master_Links[j].append(Mutate_Links(j))
 			if chance <= 1:
 				Mutate_Bias(j)
-	Master_Links = copy.deepcopy(Copy_Master_Links)
-	Master_Nodes = copy.deepcopy(Copy_Master_Nodes)
+	print(Master_Links[0])
+start = time.time()
+Master_Nodes = Generate_Neural_Net_Nodes()
+Master_Links = Generate_Neural_Net_Links()
 if __name__ == "__main__":
-	start = time.time()
-	Master_Nodes = Generate_Neural_Net_Nodes()
-	Master_Links = Generate_Neural_Net_Links()
 	for j in range(len(Master_Links)):
-		for i in range(200):
+		for i in range(50):
 			chance = random.randint(1, 10)
 			if chance > 8:
 				if len(Master_Links[j]) > 0:	
@@ -679,8 +678,9 @@ if __name__ == "__main__":
 			if chance > 2 and chance <= 8:
 				Master_Links[j].append(Mutate_Links(j))
 			if chance <= 2:
+				print(Master_Nodes[0])
 				Mutate_Bias(j)
-	Fitness_List = Fitness_Calculate()
-	Make_New_Population()
-	end = time.time()
-	print(end - start)
+Fitness_List = Fitness_Calculate()
+Make_New_Population()
+end = time.time()
+print(end - start)
