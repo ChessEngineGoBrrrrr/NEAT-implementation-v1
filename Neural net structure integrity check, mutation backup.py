@@ -383,13 +383,12 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 	net_conections_1 = Master_Links[Net_Num_1]
 	net_conections_2 = Master_Links[Net_Num_2]
 	#Does the breeding depending on fitness(The last else asumes that after checking wich is biger they are equal)
-	print(net_conections_1,"space si demanded of me right? ALUALUALUA;LIADJKADYAGDDYGDYHECVTFYC7J",net_conections_2, "im number 111111")
 	if Fitness_List[Net_Num_1] > Fitness_List[Net_Num_2]:
 		Ofspring_Conections = copy.deepcopy(Master_Links[Net_Num_1])
 		Ofspring_Nodes = Master_Nodes[Net_Num_1]
 		for i, conection_info_1 in enumerate(net_conections_1):
 			for j, conection_info_2 in enumerate(net_conections_2):
-				if conection_info_1[4] == conection_info_2[4]:
+				if conection_info_1[0] == conection_info_2[0] and conection_info_1[1] == conection_info_2[1]:
 					if round(random.uniform(0, 2), 2) < 1.5:
 						Ofspring_Conections[i][3] == conection_info_1[3]
 					else:
@@ -399,7 +398,7 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 		Ofspring_Nodes = Master_Nodes[Net_Num_2]
 		for i, conection_info_2 in enumerate(net_conections_2):
 			for j, conection_info_1 in enumerate(net_conections_1):
-				if conection_info_1[4] == conection_info_2[4]:
+				if conection_info_1[0] == conection_info_2[0] and conection_info_1[1] == conection_info_2[1]:
 					if round(random.uniform(0, 2), 2) < 1.5:
 						Ofspring_Conections[i][3] == conection_info_2[3]
 					else:
@@ -410,7 +409,7 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 			Ofspring_Nodes = Master_Nodes[Net_Num_1]
 			for i, conection_info_1 in enumerate(net_conections_1):
 				for j, conection_info_2 in enumerate(net_conections_2):
-					if conection_info_1[4] == conection_info_2[4]:
+					if conection_info_1[0] == conection_info_2[0] and conection_info_1[1] == conection_info_2[1]:
 						if round(random.uniform(0, 2), 2) < 1.5:
 							Ofspring_Conections[i][3] == conection_info_1[3]
 						else:
@@ -420,12 +419,11 @@ def Hoinky_Boinky(Net_Num_1: int, Net_Num_2: int, Net_2_Is_Unique: bool = True) 
 			Ofspring_Nodes = Master_Nodes[Net_Num_2]
 			for i, conection_info_2 in enumerate(net_conections_2):
 				for j, conection_info_1 in enumerate(net_conections_1):
-					if conection_info_1[4] == conection_info_2[4]:
+					if conection_info_1[0] == conection_info_2[0] and conection_info_1[1] == conection_info_2[1]:
 						if round(random.uniform(0, 2), 2) < 1.5:
 							Ofspring_Conections[i][3] == conection_info_2[3]
 						else:
 							Ofspring_Conections[i][3] == conection_info_1[3]
-	print(Ofspring_Conections, "im number 222222")
 	#makes sure the inovation nums are correct
 	for i in range(len(Master_Links[Net_Num_2])):
 		for j in range(len(Inovation_Num_List)):
@@ -441,11 +439,13 @@ Current_Layer: list[list[int]] = []
 Caclulate_Return: float = 1
 def Calculate(Net_Num: int) -> None:
 	global Current_Layer
+	global Master_Nodes
+	global Master_Links
 	Sum_Current_Node: float = 0.0
 	Exists_Alredy: bool = False
 	global Caclulate_Return
 	global Curent_Layer_ToBe_Calculated
-	if len(Current_Layer) > 0:	
+	if Current_Layer:	
 		if Current_Layer[len(Current_Layer) - 1][0] == 65:
 			for j in range(len(Current_Layer)):
 				if Current_Layer[j][0] == 65:
@@ -460,14 +460,12 @@ def Calculate(Net_Num: int) -> None:
 					Sum_Current_Node = Sum_Current_Node + First_Layer[Link_info[0]]*Link_info[3]
 					Exists_Alredy = True
 			if Exists_Alredy == True:
-
-
 				if Node_Info[0] > 65:
 					Sum_Current_Node = Sum_Current_Node + Node_Info[3]
-				if Sum_Current_Node > 0 or Sum_Current_Node == 0:
-					Current_Layer.append([Node_Info[0],int(round(Sum_Current_Node,2)), Node_Info[2]])
+				if Sum_Current_Node >= 0:
+					Current_Layer.append([Node_Info[0],round(Sum_Current_Node,2), Node_Info[2]])
 				else: 
-					Current_Layer.append([Node_Info[0],int(round(Sum_Current_Node*0.5, 2)), Node_Info[2]])
+					Current_Layer.append([Node_Info[0],round(Sum_Current_Node*0.5, 2), Node_Info[2]])
 			Exists_Alredy = False
 			Sum_Current_Node = 0.0
 		Curent_Layer_ToBe_Calculated = 1 + Curent_Layer_ToBe_Calculated
@@ -490,6 +488,7 @@ def Calculate(Net_Num: int) -> None:
 			Exists_Alredy = False
 			Sum_Current_Node = 0.0
 		Curent_Layer_ToBe_Calculated = 1 + Curent_Layer_ToBe_Calculated
+	print(Net_Num," Layers: ", Current_Layer,Curent_Layer_ToBe_Calculated," Net_num: ", end = "")
 	Calculate(Net_Num)
 Target_Species_Number = 50
 Allowed_Species_Distance = 50
@@ -621,13 +620,13 @@ def Make_New_Population() -> None:
 				Roulette_List.append(round(Fitness_List[Individual]/Sum_Species*100 + Roulette_List[j - 1], 2))
 		if len(Species) == 1:
 			for i in range(int(Species_Allowed_Offsprings[2])):
-				Original_Net_0_Links = Master_Links[0]
-				Original_Net_0_Nodes = Master_Nodes[0]
+				Original_Net_0_Links = copy.deepcopy(Master_Links[0])
+				Original_Net_0_Nodes = copy.deepcopy(Master_Nodes[0])
 				Procreation_resault = Hoinky_Boinky(Species[0], 0, False)
-				Copy_Master_Links[index] = Procreation_resault[0]
-				Copy_Master_Nodes[index] = Procreation_resault[1]
-				Master_Links[0] = Original_Net_0_Links
-				Master_Nodes[0] = Original_Net_0_Nodes
+				Copy_Master_Links[index] = copy.deepcopy(Procreation_resault[0])
+				Copy_Master_Nodes[index] = copy.deepcopy(Procreation_resault[1])
+				Master_Links[0] = copy.deepcopy(Original_Net_0_Links)
+				Master_Nodes[0] = copy.deepcopy(Original_Net_0_Nodes)
 				index += 1
 		if Species_Allowed_Offsprings[2] != 0 and len(Species) != 1:
 			for i in range(int(Species_Allowed_Offsprings[2])):
@@ -644,23 +643,24 @@ def Make_New_Population() -> None:
 							Parent_2 = l
 							break
 				Procreation_resault = Hoinky_Boinky(Species[Parent_1], Species[Parent_2], True)
-				Copy_Master_Links[index] = Procreation_resault[0]
-				Copy_Master_Nodes[index] = Procreation_resault[1]				
+				Copy_Master_Links[index] = copy.deepcopy(Procreation_resault[0])
+				Copy_Master_Nodes[index] = copy.deepcopy(Procreation_resault[1])
+				if index < 7:	
+					print(Copy_Master_Nodes[index],Copy_Master_Links[index],index, "pupusbinted")				
 				index += 1
 	Master_Links = copy.deepcopy(Copy_Master_Links)
 	Master_Nodes = copy.deepcopy(Copy_Master_Nodes)
-	print(Master_Links[0], "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Master_Nodes[0])
 	for j in range(len(Master_Links)):
-		for _ in range(6):
-			chance = random.randint(1, 20)
-			if chance > 15:
+		for i in range(10):
+			chance = random.randint(1, 10)
+			if chance > 8:
 				if len(Master_Links[j]) > 0:	
 					Mutate_Nodes(j)
 				else:	
 					Master_Links[j].append(Mutate_Links(j))
-			if chance > 4 and chance <= 15:
+			if chance > 2 and chance <= 8:
 				Master_Links[j].append(Mutate_Links(j))
-			if chance <= 1:
+			if chance <= 2:
 				Mutate_Bias(j)
 	print(Master_Links[0])
 start = time.time()
@@ -668,7 +668,7 @@ Master_Nodes = Generate_Neural_Net_Nodes()
 Master_Links = Generate_Neural_Net_Links()
 if __name__ == "__main__":
 	for j in range(len(Master_Links)):
-		for i in range(50):
+		for i in range(20):
 			chance = random.randint(1, 10)
 			if chance > 8:
 				if len(Master_Links[j]) > 0:	
@@ -680,6 +680,8 @@ if __name__ == "__main__":
 			if chance <= 2:
 				print(Master_Nodes[0])
 				Mutate_Bias(j)
+Fitness_List = Fitness_Calculate()
+Make_New_Population()
 Fitness_List = Fitness_Calculate()
 Make_New_Population()
 end = time.time()
